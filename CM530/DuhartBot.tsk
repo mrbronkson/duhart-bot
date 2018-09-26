@@ -1,0 +1,41 @@
+﻿version 3.00
+cm_version 1.0
+platform CM-530
+o // param_text:Program to open packet from Duhart Bot C++ program
+o // param_text:Bronson Duhart
+o // param_text:2014
+o main
+o begin
+o load param_dest:var:GoalPos1 param_src:position_num:512
+o load param_dest:var:GoalPos2 param_src:position_num:512
+o load param_dest:motor:4:107 param_src:dec_num:220
+o load param_dest:motor:6:107 param_src:dec_num:220
+- 
+o while(1)
+o begin
+- 
+o if param_src:cm:2 lop:== param_src:bool_num:1 rop:then
+o begin
+o load param_dest:var:Packet1 param_src:cm:1
+o compute param_dest:var:IdMask param_src:var:Packet1 aop:& param_src:bin_num:32768
+- 
+o if param_src:var:IdMask lop:== param_src:bin_num:32768 rop:then
+o begin
+o compute param_dest:var:GoalPos2 param_src:var:Packet1 aop:& param_src:bin_num:1023
+o end
+- 
+o else
+o begin
+o compute param_dest:var:GoalPos1 param_src:var:Packet1 aop:& param_src:bin_num:1023
+o end
+o end
+- 
+o if param_src:var:GoalPos1 lop:>= param_src:position_num:900 rop:then
+o load param_dest:var:GoalPos1 param_src:position_num:900
+o elseif param_src:var:GoalPos1 lop:<= param_src:position_num:123 rop:then
+o load param_dest:var:GoalPos1 param_src:position_num:123
+- 
+o load param_dest:motor:4:106 param_src:var:GoalPos1
+o load param_dest:motor:6:106 param_src:var:GoalPos2
+o end
+o end
